@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Astronomy Picture of the Day</title>
+  </head>
+  <body>
+    <img src="" id="picture" />
+    <p id="copyright"></p>
+    <h2 id="title"></h2>
+    <p id="description"></p>
+    <script>
+        // API Key
+        let API_KEY = "L3SJqYouzpcbFCdOWU13n7qo0ThTHTJtbevT0wyH";
+      
+        // API URL for APOD
+        let API_URL = `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}`;
+      
+        // Fetch data from API
+        fetch(API_URL)
+          .then(response => response.json())
+          .then(data => {
+            // Get the picture URL
+            let pictureURL = data.url;
+      
+            // Get the picture copyright
+            let pictureCopyright = data.copyright;
+      
+            // Get the picture title
+            let pictureTitle = data.title;
+      
+            // Get the picture description
+            let pictureDescription = data.explanation;
+      
+            // Update the webpage with the data
+            document.querySelector("#picture").src = pictureURL;
+            document.querySelector("#copyright").innerHTML = "Copyright: " + pictureCopyright;
+            document.querySelector("#title").innerHTML = pictureTitle;
+            document.querySelector("#description").innerHTML = pictureDescription;
+          });
+      </script>
+ </body>
+ </html>      

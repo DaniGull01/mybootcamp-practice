@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Weather Application</title>
+    <script >
+      // API Key for OpenWeatherMap
+      const API_KEY = "fff19daddb6332d0823814c4a2d6f90a";         
+
+      // Function to fetch weather data from OpenWeatherMap API
+    
+      async function getWeatherData(city) {
+        try {
+          const response = await fetch(
+            `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
+          );
+          const data = await response.json();
+          return data;
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      // Function to display weather data on the page
+      function displayWeatherData(data) {
+        const weatherDescription = data.weather[0].description;
+        const temperature = data.main.temp;
+        const feelLike = data.main.feels_like;
+        const sunrise = new Date(data.sys.sunrise * 1000).toLocaleTimeString();
+        const sunset = new Date(data.sys.sunset * 1000).toLocaleTimeString();
+        const longitude = data.coord.lon;
+        const latitude = data.coord.lat;
+
+        const weatherData = `
+          <p>Weather Description: ${weatherDescription}</p>
+          <p>Temperature: ${temperature}°C <i class="fa-solid fa-temperature-three-quarters"></i></p>
+          <p>Feel Like: ${feelLike}°C</p>
+          <p>Sunrise: ${sunrise}</p>
+          <p>Sunset: ${sunset}</p>
+          <p>Longitude: ${longitude}</p>
+          <p>Latitude: ${latitude}</p>
+        `;
+
+        document.getElementById("weather-data").innerHTML = weatherData;
+      }
+
+      // Function to handle form submission
+      function handleSubmit(event) {
+        event.preventDefault();
+
+        const city = document.getElementById("city").value;
+        getWeatherData(city).then((data) => displayWeatherData(data));
+      }
+    </script>
+  </head>
+  <body>
+    <form id="weather-form">
+      <input type="text" id="city" placeholder="Enter city name">
+      <button type="submit">Get Weather</button>
+    </form>
+    <div id="weather-data"></div>
+    <script>
+      // Event listener for form submission
+      const form = document.getElementById("weather-form");
+      form.addEventListener("submit", handleSubmit);
+    </script>
+  </body>
+</html>
